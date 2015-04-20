@@ -1,0 +1,40 @@
+# Each entry is of the form:
+# result: [test-name] [flags] [subtest] [subtest-line] comment-field
+#
+# result         PASS, XFAIL or UNSUPPORTED.
+# test-name      The name of the test as it appears in the summary (.sum file).
+# flags          The set of flags this entry applies to.
+# subtest        Optional subtest type, commonly 'execute' or 'compile'
+# subtest-line   Optional line for the subtest (if appropriate)
+# comment-field  Optional and ignored
+#
+# Optional fields can be omitted, or empty if necessary.
+# Lines starting with a hash '#' or containing only white-space are ignored.
+# For duplicate entries, the latter result is used.
+#
+# A more specific annotation is chosen in preference to a more generic one, eg:
+#       XFAIL: [my/test/path]
+#       PASS: [my/test/path] [-O2 -g3]
+# Will set the expected result as XFAIL for the test, apart from when the flags
+# match '-O2 -g3'.
+
+# Language features intentionally never supported by Clang.
+UNSUPPORTED: [gcc.c-torture/compile/20010605-1.c]     VLA (Variable Length Array)
+UNSUPPORTED: [gcc.c-torture/compile/20020210-1.c]     VLA
+UNSUPPORTED: [gcc.c-torture/compile/20030224-1.c]     VLA
+UNSUPPORTED: [gcc.c-torture/compile/20050801-2.c]     VLA
+UNSUPPORTED: [gcc.c-torture/compile/920428-4.c]       VLA
+UNSUPPORTED: [gcc.c-torture/compile/920501-16.c]      VLA
+
+# GCC warns, clang errors                    
+XFAIL: [gcc.c-torture/compile/920625-2.c]     conflicting types
+
+# Tests for specific optimization behaviour
+XFAIL: [gcc.dg/builtins-10.c]    constant folding
+XFAIL: [gcc.dg/builtins-11.c]    constant folding
+XFAIL: [gcc.dg/builtins-18.c]    constant folding
+
+# 32-bit int assumptions in test suite
+XFAIL: [gcc.dg/pr20216.c]        loop counter > 16 bit                    
+XFAIL: [gcc.dg/pr27959.c]        shift > 16 bit
+
